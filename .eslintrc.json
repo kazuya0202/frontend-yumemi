@@ -1,0 +1,64 @@
+{
+  "root": true,
+  "env": { "browser": true, "es6": true },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "prettier"
+  ],
+  "ignorePatterns": ["dist", ".eslintrc.cjs"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["react-refresh", "import", "react-hooks", "react"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "react-refresh/only-export-components": [
+      "warn",
+      { "allowConstantExport": true }
+    ],
+    "semi": "error",
+    "quotes": "error",
+    "jsx-quotes": "error",
+    "space-in-parens": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn", // 依存配列
+    "@typescript-eslint/no-unused-vars": "warn",
+    // importの順番
+    "import/order": [
+      "warn",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling"],
+          "object",
+          "type",
+          "index"
+        ],
+        "newlines-between": "always",
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "pathGroups": [
+          {
+            "pattern": "src/types/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "src/repositories/**",
+            "group": "internal",
+            "position": "before"
+          }
+        ]
+      }
+    ]
+  }
+}
