@@ -1,30 +1,14 @@
-import { useEffect, useState } from "react";
-
-import { ResasAPIResponse, ResasPrefecture } from "@/models/APIResponseType";
-import { client } from "@/utils/resasClient";
+import { usePrefectures } from "@/hooks/usePrefectures";
 
 export default function Prefectures() {
-  const [prefs, setPrefs] = useState<ResasPrefecture[]>();
+  const { prefs, isPending, isError, error } = usePrefectures();
 
-  useEffect(() => {
-    // すでに取得した場合は、再取得しない
-    if (prefs) {
-      return;
-    }
-
-    client
-      .get<ResasAPIResponse<ResasPrefecture>>(
-        "/api/v1/prefectures",
-        { headers: { "X-API-KEY": import.meta.env.VITE_RESAS_API_KEY } }
-      )
-      .then((res) => {
-        setPrefs(res.data.result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
-
+  if (isPending) {
+    return <div>都道府県のデータ取得中...</div>;
+  }
+  if (isError) {
+    return <div>{error?.message}</div>;
+  }
   return <>
     <span>都道府県一覧</span>
     <ul>
