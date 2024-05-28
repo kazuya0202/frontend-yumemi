@@ -1,21 +1,27 @@
 import { useState } from "react";
 
+import { useFetchPopulation, useSelectedPrefCodes, useFetchedPopulation } from "./hooks/usePopulation";
 import { usePrefectures } from "./hooks/usePrefectures";
 
 import Prefectures from "@/features/Prefectures";
+
 import "./App.scss";
 
 function App() {
   const { prefs, isPending, isError, error } = usePrefectures();
-  const [selectedPrefCodes, setSelectedPrefs] = useState<number[]>([]);
+  const { population } = useFetchedPopulation();
+  const { selectedPrefCodes, setSelectedPrefCodes } = useSelectedPrefCodes();
+
+  useFetchPopulation();  // 選択した都道府県別のデータを取得
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const prefCode = Number(event.target.value);
 
-    if (selectedPrefCodes.includes(prefCode)) {
-      setSelectedPrefs(selectedPrefCodes.filter((pref) => pref !== prefCode));
+    if (selectedPrefCodes.has(prefCode)) {
+      selectedPrefCodes.delete(prefCode);
+      setSelectedPrefCodes(new Set(selectedPrefCodes));
     } else {
-      setSelectedPrefs([...selectedPrefCodes, prefCode]);
+      setSelectedPrefCodes(new Set([...selectedPrefCodes, prefCode]));
     }
   };
 
@@ -32,9 +38,9 @@ function App() {
       <Prefectures prefs={prefs} onChange={handleCheckboxChange} />
 
       <p>選択項目</p>
-      <ul>
-        {selectedPrefCodes.join(", ")}
-      </ul>
+      <span>{[...selectedPrefCodes].join(", ")}</span>
+      <p>取得済みデータ</p>
+      <span>{population.map((p) => p.prefCode).join(", ")}</span>
     </>
   );
 }
