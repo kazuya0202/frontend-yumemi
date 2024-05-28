@@ -1,18 +1,23 @@
-import { usePrefectures } from "@/hooks/usePrefectures";
+import styles from "./Prefectures.module.scss";
 
-export default function Prefectures() {
-  const { prefs, isPending, isError, error } = usePrefectures();
+import Checkbox from "@/components/Checkbox";
+import { ResasPrefecture } from "@/models/APIResponseType";
 
-  if (isPending) {
-    return <div>都道府県のデータ取得中...</div>;
-  }
-  if (isError) {
-    return <div>{error?.message}</div>;
-  }
+type Props = {
+  prefs: ResasPrefecture[] | undefined;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function Prefectures({ prefs, onChange }: Props) {
   return <>
-    <span>都道府県一覧</span>
-    <ul>
-      {prefs && prefs.map((pref) => <li key={pref.prefCode}>{pref.prefName}</li>)}
-    </ul>
+    <span>都道府県</span>
+    <section className={styles.prefectures}>
+      {prefs && prefs.map((pref) => {
+        return <Checkbox key={pref.prefCode} value={pref.prefCode} onChange={onChange}>
+          {pref.prefName}
+        </Checkbox>;
+      }
+      )}
+    </section>
   </>;
 }
