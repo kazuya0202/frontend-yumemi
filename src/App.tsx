@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { useFetchPopulation, useSelectedPrefCodes, useFetchedPopulation } from "./hooks/usePopulation";
 import { usePrefectures } from "./hooks/usePrefectures";
 
