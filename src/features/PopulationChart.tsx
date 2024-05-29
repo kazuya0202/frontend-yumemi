@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import Badge from "@/components/Badge";
 import PopulationChart from "@/components/LineChart";
 import RadioGroup from "@/components/RadioGroup";
 import { useFetchedPopulation, useSelectedPrefCodes } from "@/hooks/usePopulation";
@@ -39,6 +40,7 @@ export default function Chart() {
 
   return <>
     <section>
+      <Badge>グラフ</Badge>
       <RadioGroup options={options} value={kind} onChange={handleRadioChange} />
       {populationData.length === 0
         && <p>グラフを表示するには都道府県を選択してください。</p>
