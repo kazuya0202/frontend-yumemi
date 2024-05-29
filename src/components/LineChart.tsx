@@ -45,10 +45,10 @@ export default function PopulationChart({ data, xAxisLabel, yAxisLabel, xAxisDat
       >
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey={xAxisDataKey} type="category" allowDuplicatedCategory={false}>
-          <Label value={xAxisLabel} offset={0} dx={15} dy={10} position="insideBottomRight" />
+          <Label value={xAxisLabel} offset={0} dx={15} dy={10} position="insideBottomRight" fill="#333333" />
         </XAxis>
         <YAxis dataKey={yAxisDataKey} tickFormatter={(d) => new Intl.NumberFormat("en").format(d)}>
-          <Label value={yAxisLabel} offset={0} dy={-20} position="top" />
+          <Label value={`${yAxisLabel} (人)`} offset={0} dy={-20} position="top" fill="#333333" />
         </YAxis>
         <Legend align="center" wrapperStyle={{ paddingTop: 15 }} />
 
