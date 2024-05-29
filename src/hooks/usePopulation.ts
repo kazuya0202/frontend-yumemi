@@ -1,19 +1,16 @@
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 
+import { usePrefectures } from "@/hooks/usePrefectures";
 import { ResasAPIResponse, ResasPopulation } from "@/models/APIResponseType";
+import { PopulationElement } from "@/models/ChartElements";
 import { client } from "@/utils/resasClient";
 
-
-type PopulationItem = {
-  prefCode: number;
-  data: ResasPopulation[];
-}
 
 /**
  * 取得済みの都道府県別のデータ
  */
-const population = atom<PopulationItem[]>([]);
+const population = atom<PopulationElement[]>([]);
 export const useFetchedPopulation = () => {
   const [_population, setPopulation] = useAtom(population);
   return { population: _population, setPopulation };
@@ -31,6 +28,7 @@ export const useSelectedPrefCodes = () => {
 export const useFetchPopulation = () => {
   const { selectedPrefCodes, setSelectedPrefCodes } = useSelectedPrefCodes();
   const { population, setPopulation } = useFetchedPopulation();
+  const { prefs } = usePrefectures();
 
   useEffect(() => {
     const fetchPopulationData = async (prefCode: number) => {
@@ -43,7 +41,20 @@ export const useFetchPopulation = () => {
             headers: { "X-API-KEY": import.meta.env.VITE_RESAS_API_KEY }
           }
         );
-      setPopulation([...population, { prefCode: prefCode, data: res.data.result }]);
+
+      const prefName = prefs?.find((d) => d.prefCode === prefCode)?.prefName;
+      const elm: PopulationElement = {
+        prefName: prefName!,
+        prefCode: prefCode,
+        data: [],
+      };
+      for (const item of res.data.result.data) {
+        elm.data.push({
+          label: item.label,
+          data: item.data.filter((d) => d.year <= res.data.result.boundaryYear),
+        });
+      }
+      setPopulation([...population, elm]);
       setSelectedPrefCodes(new Set([...selectedPrefCodes, prefCode]));
     };
 

@@ -1,7 +1,12 @@
-export type ResasAPIResponse<T> = {
+export type ResasAPIResponseList<T> = {
   message: string | null;
   result: T[];
 };
+
+export type ResasAPIResponse<T> = {
+  message: string | null;
+  result: T;
+}
 
 export type ResasPrefecture = {
   prefCode: number;
@@ -19,3 +24,5 @@ export type ResasPopulation = {
     }[]
   }[]
 }
+
+export type PopulationKind = "総人口" | "年少人口" | "生産年齢人口" | "老年人口";
