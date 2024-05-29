@@ -31,11 +31,16 @@ function App() {
 
   return (
     <>
-      <h1>都道府県別の総人口・人口構成</h1>
-      <Prefectures prefs={prefs} onChange={handleCheckboxChange} />
+      <header className="header">
+        <h1>都道府県別の総人口・人口構成</h1>
+      </header>
 
-      <h1>グラフ</h1>
-      <Chart />
+      <div className="container">
+        <main>
+          <Prefectures prefs={prefs} onChange={handleCheckboxChange} />
+          <Chart />
+        </main>
+      </div>
     </>
   );
 }
