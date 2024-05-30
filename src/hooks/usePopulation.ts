@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { usePrefectures } from "@/hooks/usePrefectures";
 import { ResasAPIResponse, ResasPopulation } from "@/models/APIResponseType";
 import { PopulationElement } from "@/models/ChartElements";
-import { client } from "@/utils/resasClient";
+import { HEADERS, client } from "@/utils/resasClient";
 
 /**
  * 取得済みの都道府県別のデータ
@@ -37,7 +37,7 @@ export const useFetchPopulation = () => {
         "/api/v1/population/composition/perYear",
         {
           params: { cityCode: "-", prefCode: prefCode },
-          headers: { "X-API-KEY": import.meta.env.VITE_RESAS_API_KEY }
+          headers: HEADERS,
         }
       );
 
