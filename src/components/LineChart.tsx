@@ -35,7 +35,7 @@ const COLORS = [
   "#DE3700",
 ];
 
-export default function PopulationChart({ data, xAxisLabel, yAxisLabel, xAxisDataKey, yAxisDataKey }: Props) {
+export default function Chart({ data, xAxisLabel, yAxisLabel, xAxisDataKey, yAxisDataKey }: Props) {
   return <>
     <ResponsiveContainer width={"100%"} minHeight={300}>
       <LineChart
@@ -47,14 +47,14 @@ export default function PopulationChart({ data, xAxisLabel, yAxisLabel, xAxisDat
         <XAxis dataKey={xAxisDataKey} type="category" allowDuplicatedCategory={false}>
           <Label value={xAxisLabel} offset={0} dx={15} dy={10} position="insideBottomRight" fill="#333333" />
         </XAxis>
-        <YAxis dataKey={yAxisDataKey} tickFormatter={(d) => new Intl.NumberFormat("en").format(d)}>
-          <Label value={`${yAxisLabel} (人)`} offset={0} dy={-20} position="top" fill="#333333" />
+        <YAxis dataKey={yAxisDataKey} tickFormatter={(v: number) => new Intl.NumberFormat("en").format(v)}>
+          <Label value={yAxisLabel} offset={0} dy={-20} position="top" fill="#333333" />
         </YAxis>
         <Legend align="center" wrapperStyle={{ paddingTop: 15 }} />
 
         <Tooltip
           labelFormatter={(d) => `${d}年`}
-          formatter={(value: number) => `${new Intl.NumberFormat("en").format(value).toString()}人`}
+          formatter={(v: number) => `${new Intl.NumberFormat("en").format(v)}人`}
         />
 
         {data.map((d, i) => (

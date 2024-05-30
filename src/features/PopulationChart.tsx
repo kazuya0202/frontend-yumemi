@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 
-import Badge from "@/components/Badge";
-import PopulationChart from "@/components/LineChart";
+import Chart from "@/components/LineChart";
 import RadioGroup from "@/components/RadioGroup";
+import Title from "@/components/Title";
 import { useFetchedPopulation, useSelectedPrefCodes } from "@/hooks/usePopulation";
 import { PopulationKind } from "@/models/APIResponseType";
 import { PopulationElement } from "@/models/ChartElements";
 
-
-export default function Chart() {
+export default function PopulationChart() {
   const { population } = useFetchedPopulation();
   const { selectedPrefCodes } = useSelectedPrefCodes();
 
   const [kind, setKind] = useState<PopulationKind>("総人口");
   const [populationData, setPopulationData] = useState<PopulationElement[]>([]);
 
+  /**
+   * 人口構成の項目に応じて都道府県別のデータを絞り込む
+   * 選択された都道府県を対象に、人口構成の項目を1つにする
+   */
   const filterPopulationByKind = () => {
     const populationData = population
       .filter((p) => selectedPrefCodes.has(p.prefCode))
@@ -40,14 +43,14 @@ export default function Chart() {
 
   return <>
     <section>
-      <Badge>グラフ</Badge>
+      <Title>グラフ</Title>
       <RadioGroup options={options} value={kind} onChange={handleRadioChange} />
       {populationData.length === 0
-        && <p>グラフを表示するには都道府県を選択してください。</p>
-        || <PopulationChart
+        && <p className="message-box">グラフを表示するには都道府県を選択してください。</p>
+        || <Chart
           data={populationData}
           xAxisLabel="年"
-          yAxisLabel={kind}
+          yAxisLabel={`${kind} (人)`}
           xAxisDataKey="year"
           yAxisDataKey="value"
         />
