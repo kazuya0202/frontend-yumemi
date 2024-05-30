@@ -22,15 +22,22 @@ export default function Prefectures() {
     }
   };
 
+  const handleClickClearButton = () => {
+    setSelectedPrefCodes(new Set());
+  };
+
   return <>
     <section>
       <div className={styles.title}>
         <Title>都道府県</Title>
         {selectedPrefCodes.size > 0 &&
-          <p>
-            {selectedPrefCodes.size}
-            <span className={styles.label}>項目選択中</span>
-          </p>
+          <>
+            <p>
+              {selectedPrefCodes.size}
+              <span className={styles.label}>項目選択中</span>
+            </p>
+            <button type="button" onClick={handleClickClearButton}>すべて解除</button>
+          </>
         }
       </div>
 
