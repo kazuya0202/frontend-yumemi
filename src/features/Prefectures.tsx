@@ -1,23 +1,50 @@
 import styles from "./Prefectures.module.scss";
 
 import Checkbox from "@/components/Checkbox";
-import { ResasPrefecture } from "@/models/APIResponseType";
+import Title from "@/components/Title";
+import { useFetchPopulation, useSelectedPrefCodes } from "@/hooks/usePopulation";
+import { usePrefectures } from "@/hooks/usePrefectures";
 
-type Props = {
-  prefs: ResasPrefecture[] | undefined;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+export default function Prefectures() {
+  const { prefs, isPending, isError, error } = usePrefectures();
+  const { selectedPrefCodes, setSelectedPrefCodes } = useSelectedPrefCodes();
 
-export default function Prefectures({ prefs, onChange }: Props) {
+  useFetchPopulation();  // 選択時に都道府県別のデータを取得
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const prefCode = Number(event.target.value);
+
+    if (selectedPrefCodes.has(prefCode)) {
+      selectedPrefCodes.delete(prefCode);
+      setSelectedPrefCodes(new Set(selectedPrefCodes));
+    } else {
+      setSelectedPrefCodes(new Set([...selectedPrefCodes, prefCode]));
+    }
+  };
+
   return <>
-    <span>都道府県</span>
-    <section className={styles.prefectures}>
-      {prefs && prefs.map((pref) => {
-        return <Checkbox key={pref.prefCode} value={pref.prefCode} onChange={onChange}>
-          {pref.prefName}
-        </Checkbox>;
-      }
-      )}
+    <section>
+      <div className={styles.title}>
+        <Title>都道府県</Title>
+        {selectedPrefCodes.size > 0 &&
+          <p>
+            {selectedPrefCodes.size}
+            <span className={styles.label}>項目選択中</span>
+          </p>
+        }
+      </div>
+
+      {isPending && <p className="message-box">都道府県のデータ取得中...</p>}
+      {isError && <p className="error-box">{error?.message}</p>}
+
+      <div className={styles.prefectures}>
+        {prefs && prefs.map((pref) => {
+          return <Checkbox key={pref.prefCode} value={pref.prefCode} onChange={handleCheckboxChange}>
+            {pref.prefName}
+          </Checkbox>;
+        }
+        )}
+      </div>
     </section>
   </>;
 }
