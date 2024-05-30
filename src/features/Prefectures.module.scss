@@ -1,0 +1,19 @@
+.prefectures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  flex-direction: row;
+}
+
+.title {
+  display: flex;
+  justify-content: start;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+
+  .label {
+    margin-left: 4px;
+    font-size: 0.9rem;
+  }
+}
