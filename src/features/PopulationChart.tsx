@@ -41,13 +41,19 @@ export default function PopulationChart() {
     setKind(kind);
   };
 
+  const isEmpty = populationData.length === 0 && selectedPrefCodes.size === 0;
+  const isFetching = populationData.length === 0 && selectedPrefCodes.size > 0;
+
   return <>
     <section>
       <Title>グラフ</Title>
       <RadioGroup options={options} value={kind} onChange={handleRadioChange} />
-      {populationData.length === 0
-        && <p className="message-box">グラフを表示するには都道府県を選択してください。</p>
-        || <Chart
+
+      {isEmpty && <p className="message-box">グラフを表示するには都道府県を選択してください。</p>}
+      {isFetching && <p className="message-box">人口構成データの取得中...</p>}
+
+      {!isEmpty && !isFetching
+        && <Chart
           data={populationData}
           xAxisLabel="年"
           yAxisLabel={`${kind} (人)`}
