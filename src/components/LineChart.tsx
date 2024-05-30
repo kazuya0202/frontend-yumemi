@@ -37,7 +37,7 @@ const COLORS = [
 
 export default function Chart({ data, xAxisLabel, yAxisLabel, xAxisDataKey, yAxisDataKey }: Props) {
   return <>
-    <ResponsiveContainer width={"100%"} minHeight={300}>
+    <ResponsiveContainer width={"100%"} minHeight={450}>
       <LineChart
         width={700}
         height={400}
